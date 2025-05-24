@@ -5,73 +5,147 @@ import { useState } from "react";
 import Link from "next/link"
 
 import { HiMenuAlt3 } from "react-icons/hi";
-import { IoCloseSharp, IoLogOutOutline } from "react-icons/io5";
+import { IoCloseSharp, IoLogOutOutline, IoMenuSharp, IoClose } from "react-icons/io5";
 import { FaBell } from "react-icons/fa";
 
-export default function Navbar() {
+type NavbarProps = {
+    sidebar_btn_onClick?: () => void
+    sidebar_btn_isActive?: boolean
+}
+
+export default function Navbar({ sidebar_btn_onClick, sidebar_btn_isActive }: Readonly<NavbarProps>) {
     const pathname = usePathname();
+
     const [hamburgerIsActive, setHamburgerIsActive] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    const showBrandAndTitle = ["/", "/home", "/projects", "/blogs", "/contact", "/login", "/register",].includes(pathname);
+    const basePaths = ['/overview', '/project-management', '/settings', '/tools', '/blog-management', '/user-management',]
+    const showSidebarButton = basePaths.some((base) => pathname === base || pathname.startsWith(`${base}/`))
     const showMainNav = ["/", "/home", "/projects", "/blogs", "/contact"].includes(pathname);
-    const showTitle = showMainNav || pathname === "/login" || pathname === "/register";
-    const showAuthActions = !["/login", "/register"].includes(pathname)
+    const showAuthActions = !["/login", "/register"].includes(pathname);
 
     return (
-        <nav className="w-full fixed top-0 z-10 flex flex-col gap-0.5">
-            <div className="box-border w-full h-14 px-6 flex justify-between items-center shadow drop-shadow bg-white">
-                {/* left - start */}
-                <div className="flex items-center gap-2.5">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-sm bg-gray-200" />
-                        {showTitle && (<h1 className="font-bold uppercase text-lg">PORTFOLIO</h1>)}
-                    </div>
-                </div>
-                {/* left - end */}
-
-                {/* center - start */}
+        <NavbarContainer>
+            <NavbarDesktop>
+                <NavbarItemsLeft>
+                    {showBrandAndTitle && (
+                        <NavbarBrand>
+                            <h1 className="font-bold uppercase text-lg">PORTFOLIO</h1>
+                        </NavbarBrand>
+                    )}
+                    {showSidebarButton && (
+                        <NavbarIconButton
+                            onClick={sidebar_btn_onClick ?? (() => { })}
+                            icon={sidebar_btn_isActive
+                                ? <IoClose className="w-5 h-5" />
+                                : <IoMenuSharp className="w-5 h-5" />
+                            }
+                        />
+                    )}
+                </NavbarItemsLeft>
                 {showMainNav && (
-                    <div className="hidden md:flex items-center gap-2.5">
+                    <NavbarItemsCenter>
                         <NavbarLink href="/home" name="Home" />
                         <NavbarLink href="/projects" name="Projects" />
                         <NavbarLink href="/blogs" name="Blogs" />
                         <NavbarLink href="/contact" name="Contact" />
-                    </div>
+                    </NavbarItemsCenter>
                 )}
-                {/* center - end */}
-
-                {/* right - start */}
-                <div className="flex items-center gap-2.5">
+                <NavbarItemsRight>
                     {showAuthActions && (
                         isAuthenticated ? (
                             <>
-                                <NavbarIconButton onClick={() => { }} icon={<FaBell className="w-5 h-5" />} />
-                                <NavbarIconButton onClick={() => { }} icon={<IoLogOutOutline className="w-5 h-5" />} />
+                                <NavbarIconButton
+                                    onClick={() => { }}
+                                    icon={<FaBell className="w-5 h-5" />}
+                                />
+                                <NavbarIconButton
+                                    onClick={() => { }}
+                                    icon={<IoLogOutOutline className="w-5 h-5" />}
+                                />
                             </>
                         ) : (
-                            <NavbarButton onClick={() => { }} name="Login" className="border-black bg-black hover:bg-gray-800 text-white"/>
+                            <NavbarButton
+                                onClick={() => { }}
+                                name="Login"
+                                className="border-black bg-black hover:bg-gray-800 text-white"
+                            />
                         )
                     )}
-                    {showMainNav && ( <NavabarHamburger onClick={() => setHamburgerIsActive(!hamburgerIsActive)} isActive={hamburgerIsActive}/>)}
-                </div>
-                {/* right - end */}
-            </div>
-
-            {/* mobile menu - start */}
+                    {showMainNav && (<NavabarHamburger onClick={() => setHamburgerIsActive(!hamburgerIsActive)} isActive={hamburgerIsActive} />)}
+                </NavbarItemsRight>
+            </NavbarDesktop>
             {(pathname === "/" || pathname === "/home" || pathname === "/projects" || pathname === "/blogs" || pathname === "/contact") && (
                 <>
                     {hamburgerIsActive && (
-                        <div className="md:hidden w-full py-4 px-6 flex flex-col gap-2.5 shadow drop-shadow bg-white">
+                        <NavbarMobile>
                             <NavbarLink href="/home" name="Home" />
                             <NavbarLink href="/projects" name="Projects" />
                             <NavbarLink href="/blogs" name="Blogs" />
                             <NavbarLink href="/contact" name="Contact" />
-                        </div>
+                        </NavbarMobile>
                     )}
                 </>
             )}
-            {/* mobile menu - end */}
+        </NavbarContainer>
+    )
+}
+
+const NavbarContainer = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <nav className="w-full fixed top-0 z-10 flex flex-col gap-0.5">
+            {children}
         </nav>
+    )
+}
+
+const NavbarDesktop = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <div className="box-border w-full h-14 px-6 flex justify-between items-center shadow drop-shadow bg-white">
+            {children}
+        </div>
+    )
+}
+
+const NavbarMobile = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <div className="md:hidden w-full py-4 px-6 flex flex-col gap-2.5 shadow drop-shadow bg-white">
+            {children}
+        </div>
+    )
+}
+
+const NavbarItemsLeft = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <div className="flex items-center gap-2.5">
+            {children}
+        </div>
+    )
+}
+
+const NavbarItemsCenter = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <div className="hidden md:flex items-center gap-2.5">
+            {children}
+        </div>
+    )
+}
+
+const NavbarItemsRight = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <div className="flex items-center gap-2.5">
+            {children}
+        </div>
+    )
+}
+
+const NavbarBrand = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-sm bg-gray-200" />
+            {children}
+        </div>
     )
 }
 
