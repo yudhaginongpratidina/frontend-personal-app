@@ -136,7 +136,7 @@ export default function Sidebar({ sidebar_btn_isActive }: SidebarProps) {
 }
 
 const SidebarContainer = ({ children }: { children: React.ReactNode }) => {
-    return <aside className="w-full flex">{children}</aside>;
+    return <aside className="w-fit flex">{children}</aside>;
 };
 
 const SidebarMinimized = ({ children }: { children?: React.ReactNode }) => {

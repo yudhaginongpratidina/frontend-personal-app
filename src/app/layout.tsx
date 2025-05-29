@@ -20,7 +20,7 @@ const poppins = Poppins({
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
-            <body className={`${poppins.variable} antialiased select-none`}>
+            <body className={`${poppins.variable} antialiased`}>
                 {children}
             </body>
         </html>

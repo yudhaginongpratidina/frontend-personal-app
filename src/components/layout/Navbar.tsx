@@ -94,7 +94,7 @@ export default function Navbar({ sidebar_btn_onClick, sidebar_btn_isActive }: Re
 
 const NavbarContainer = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
-        <nav className="w-full fixed top-0 z-10 flex flex-col gap-0.5">
+        <nav className="w-full fixed top-0 z-20 flex flex-col gap-0.5">
             {children}
         </nav>
     )

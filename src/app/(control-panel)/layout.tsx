@@ -14,10 +14,26 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
                 sidebar_btn_onClick={() => setSidebarIsActive(!sidebarIsActive)}
                 sidebar_btn_isActive={sidebarIsActive}
             />
-            <Sidebar 
-                sidebar_btn_isActive={sidebarIsActive}
-            />
-            {children}
+            <Main>
+                <Sidebar sidebar_btn_isActive={sidebarIsActive} />
+                <Content>{children}</Content>
+            </Main>
         </>
+    )
+}
+
+const Main = ({ children }: Readonly<{ children: React.ReactNode; }>) => {
+    return (
+        <main className="w-full flex">
+            {children}
+        </main>
+    )
+}
+
+const Content = ({ children }: Readonly<{ children: React.ReactNode; }>) => {
+    return (
+        <div className="w-full px-4 md:px-6 pt-16">
+            {children}
+        </div>
     )
 }
