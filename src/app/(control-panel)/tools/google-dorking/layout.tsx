@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Overview',
+    title: 'Google Dorking',
 }
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode; }>) {

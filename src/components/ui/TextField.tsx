@@ -2,7 +2,7 @@ import React, { useRef, useState, memo } from "react";
 import { FaEye } from "react-icons/fa";
 
 type TextFieldProps = {
-    type: "text" | "password" | "email" | "number" | "tel" | "url" | "search"
+    type: "text" | "password" | "email" | "number" | "tel" | "url" | "search" | "date"
     name: string
     value: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
