@@ -19,10 +19,11 @@ export default function Navbar({ sidebar_btn_onClick, sidebar_btn_isActive }: Re
     const [hamburgerIsActive, setHamburgerIsActive] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-    const showBrandAndTitle = ["/", "/home", "/projects", "/blogs", "/contact", "/login", "/register",].includes(pathname);
-    const basePaths = ['/overview', '/project-management', '/settings', '/tools', '/blog-management', '/user-management',]
+    const showBrandAndTitle = ["/", "/home", "/login", "/register",].includes(pathname);
+    const basePaths = ['/overview']
+
     const showSidebarButton = basePaths.some((base) => pathname === base || pathname.startsWith(`${base}/`))
-    const showMainNav = ["/", "/home", "/projects", "/blogs", "/contact"].includes(pathname);
+    const showMainNav = ["/", "/home"].includes(pathname);
     const showAuthActions = !["/login", "/register"].includes(pathname);
 
     return (
@@ -47,9 +48,6 @@ export default function Navbar({ sidebar_btn_onClick, sidebar_btn_isActive }: Re
                 {showMainNav && (
                     <NavbarItemsCenter>
                         <NavbarLink href="/home" name="Home" />
-                        <NavbarLink href="/projects" name="Projects" />
-                        <NavbarLink href="/blogs" name="Blogs" />
-                        <NavbarLink href="/contact" name="Contact" />
                     </NavbarItemsCenter>
                 )}
                 <NavbarItemsRight>
@@ -67,7 +65,7 @@ export default function Navbar({ sidebar_btn_onClick, sidebar_btn_isActive }: Re
                             </>
                         ) : (
                             <NavbarButton
-                                onClick={() => { }}
+                                onClick={() => { window.location.href = "/login" }}
                                 name="Login"
                                 className="border-black bg-black hover:bg-gray-800 text-white"
                             />
@@ -81,9 +79,6 @@ export default function Navbar({ sidebar_btn_onClick, sidebar_btn_isActive }: Re
                     {hamburgerIsActive && (
                         <NavbarMobile>
                             <NavbarLink href="/home" name="Home" />
-                            <NavbarLink href="/projects" name="Projects" />
-                            <NavbarLink href="/blogs" name="Blogs" />
-                            <NavbarLink href="/contact" name="Contact" />
                         </NavbarMobile>
                     )}
                 </>

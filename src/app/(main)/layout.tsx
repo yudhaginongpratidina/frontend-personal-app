@@ -4,7 +4,9 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
     return (
         <>
             <Navbar />
-            {children}
+            <main className="w-full pt-16">
+                {children}
+            </main>
         </>
     )
 }
